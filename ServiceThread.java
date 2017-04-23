@@ -5,7 +5,8 @@ import java.net.*;
 public class ServiceThread extends Thread {
     Socket socket;
 
-    private static int nextTicketNumber = 1;
+    // Static integer is not thread-safe http://stackoverflow.com/questions/7442559/thread-safety-for-static-variables
+    private static AtomicInteger nextTicketNumber = new AtomicInteger(1);
 
     public ServiceThread(Socket socket) {
         this.socket = socket;
@@ -17,8 +18,7 @@ public class ServiceThread extends Thread {
             PrintWriter to_client = new PrintWriter(socket.getOutputStream());
             Object _ = from_client.readLine();
 
-            to_client.println("Ticket Number: " + nextTicketNumber);
-            nextTicketNumber++;
+            to_client.println("Ticket Number: " + nextTicketNumber.incrementAndGet());
 
             to_client.close();
             from_client.close();
