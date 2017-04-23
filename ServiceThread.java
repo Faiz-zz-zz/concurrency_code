@@ -6,7 +6,7 @@ public class ServiceThread extends Thread {
     Socket socket;
 
     // Static integer is not thread-safe http://stackoverflow.com/questions/7442559/thread-safety-for-static-variables
-    private static AtomicInteger nextTicketNumber = new AtomicInteger(1);
+    private static AtomicInteger nextTicketNumber = new AtomicInteger(0);
 
     public ServiceThread(Socket socket) {
         this.socket = socket;
